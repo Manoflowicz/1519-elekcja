@@ -1,0 +1,92 @@
+1519 - JAK URUCHOMIC GRE NA TELEFONIE
+=====================================
+
+W tym folderze jest cala gra:
+   index.html            - sama gra
+   pyodide/              - srodowisko Pythona (14 MB), dzieki niemu gra dziala bez internetu
+   sw.js, manifest.webmanifest, icon-*.png - to, co pozwala dodac gre na ekran glowny
+   .htaccess             - drobne ustawienie dla serwerow Apache (patrz nizej)
+
+Zeby zagrac na telefonie, te pliki musza lezec pod jakims adresem https://...
+Samo skopiowanie pliku do telefonu nie wystarczy (przegladarki blokuja wtedy
+doladowanie srodowiska Pythona).
+
+
+A. WORDPRESS
+------------
+Zalezy, ktory masz:
+
+1) WORDPRESS NA WLASNYM HOSTINGU (wordpress.org, panel z FTP / Menedzerem plikow)
+   - wejdz w panel hostingu -> Menedzer plikow (albo polacz sie FTP)
+   - w folderze public_html (tam, gdzie siedzi WordPress) zaloz folder "1519"
+   - wgraj do niego CALA zawartosc tego folderu (razem z podfolderem pyodide)
+   - gotowe: gra jest pod https://twojadomena.pl/1519/
+   WordPress nie musi o niej nic wiedziec - to zwykle pliki obok bloga.
+   Jesli chcesz ja pokazac we wpisie, wstaw do wpisu blok "HTML" z linia:
+      <iframe src="/1519/" style="width:100%;height:800px;border:0"></iframe>
+
+2) BLOG NA WORDPRESS.COM (darmowy, Personal albo Premium)
+   Nie da sie. Wordpress.com nie pozwala wgrywac plikow .html, .js ani .wasm
+   ani uruchamiac wlasnych skryptow. Dopiero plan Business daje dostep przez
+   SFTP i wtedy dziala tak jak w punkcie 1.
+
+
+B. GITHUB PAGES (za darmo, bez wlasnego hostingu)
+-------------------------------------------------
+UWAGA NAJWAZNIEJSZA: na GitHuba wgrywa sie ZAWARTOSC tego folderu, a NIE plik ZIP.
+GitHub nie rozpakowuje archiwow - jesli wgrasz sam .zip, strona pokaze blad 404
+("must provide an index.html file"), bo w katalogu glownym nie ma pliku index.html.
+
+NAJSZYBSZA DROGA (jeden plik, dziala od razu):
+   Wgraj tylko "index.html". To wystarczy - gra dociagnie srodowisko Pythona
+   z internetu. Nie bedzie dzialac bez zasiegu, ale link zadziala natychmiast.
+   Pozostale pliki (folder pyodide, sw.js, manifest, ikony) mozesz dodac pozniej -
+   wtedy dojdzie tryb offline i dodawanie do ekranu glownego.
+1. Zaloz konto na github.com (darmowe).
+2. Kliknij "+" w prawym gornym rogu -> "New repository".
+   - Repository name: 1519
+   - zaznacz "Public"  (darmowy GitHub Pages dziala tylko z publicznym repo)
+   - "Create repository"
+3. Na stronie repozytorium: "Add file" -> "Upload files".
+   Rozpakuj najpierw te paczke na dysku (prawy klawisz -> "Wyodrebnij wszystko").
+   Potem wejdz DO rozpakowanego folderu, zaznacz wszystko w srodku (Ctrl+A)
+   i przeciagnij do okna przegladarki: index.html, sw.js, manifest.webmanifest,
+   obie ikony, plik .nojekyll ORAZ folder pyodide.
+   Nie przeciagaj samego folderu ani pliku .zip - w katalogu glownym repozytorium
+   musi wyladowac plik index.html.
+   (Najwiekszy plik ma 9 MB, limit GitHuba to 25 MB.)
+4. Na dole kliknij "Commit changes".
+5. Zakladka "Settings" -> po lewej "Pages":
+   - Source: "Deploy from a branch"
+   - Branch: main,  folder: / (root)  -> "Save"
+6. Odswiez strone po minucie. Na gorze pojawi sie adres:
+      https://TWOJA-NAZWA.github.io/1519/
+   To jest link do gry. Dziala na komputerze i na telefonie.
+
+Uwaga: darmowe GitHub Pages sa publiczne - kazdy, kto zna adres, moze wejsc.
+Adresu nikt nie zgadnie, ale gra nie jest zabezpieczona haslem.
+
+
+C. NA TELEFONIE (Android)
+-------------------------
+- otworz adres w Chrome
+- menu (trzy kropki) -> "Dodaj do ekranu glownego"
+- od tej pory gra odpala sie jak aplikacja, na pelnym ekranie, bez paska adresu
+- po pierwszym uruchomieniu dziala BEZ INTERNETU (wszystko siedzi w pamieci telefonu)
+- interfejs na telefonie ma panel decyzji na gorze; tabela elektorow przewija sie w bok
+- tryb hot-seat sprawdza sie na telefonie najlepiej: kurtyna zaslania ekran przy
+  zmianie gracza, wiec telefon po prostu podaje sie z rak do rak
+
+
+D. WERSJA LEKKA (bez folderu pyodide)
+-------------------------------------
+Jesli nie chcesz wgrywac 14 MB, skasuj folder "pyodide" przed wgraniem.
+Gra sama pobierze srodowisko Pythona z internetu przy kazdym uruchomieniu
+(ok. 10 MB, wolniejszy start, nie dziala bez zasiegu). Nic wiecej nie trzeba zmieniac.
+
+
+E. GDY GRA DLUGO WSTAJE
+-----------------------
+Na serwerze Apache upewnij sie, ze plik .htaccess z tego folderu tez zostal wgrany
+(zaczyna sie od kropki, niektore programy FTP go ukrywaja). Bez niego przegladarka
+nie rozpoznaje formatu .wasm i uruchomienie trwa dluzej.
